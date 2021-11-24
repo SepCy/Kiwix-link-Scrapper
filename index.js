@@ -1,21 +1,17 @@
-const axios = require("axios");
-const cheerio = require("cheerio");
+const express = require('express')
+const cors = require('cors')
+require('dotenv').config()
 
-// Function extracting links
 
-const extractLinks = ($) => [
-  ...new Set(
-    $(".book__list a") // Select pagination links
-      .map((_, a) => $(a).attr("href")) // Extract the href (url) from each link
-      .toArray() // Convert cheerio object to array
-  ),
-];
+const app = express()
+const port = process.env.PORT || 5700
 
-const URL = "http://localhost:8090";
+const api = require('./api/api.js')
+app.use(cors())
+app.use(express.json())
 
-axios.get(URL).then(({ data }) => {
-  const $ = cheerio.load(data); // Initialize cheerio
-  const links = extractLinks($);
 
-  console.log(links);
-});
+app.listen(port, () => {
+  console.log(`Server is running on port : ${port}`)
+})
+
